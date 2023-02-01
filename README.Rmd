@@ -1,0 +1,68 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# palmtrees <img src="man/figures/logo.png" align="right" height="139" />
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of palmtrees is to provide the data set [PalmTraits 1.0](https://www.nature.com/articles/s41597-019-0189-0) which is  a species-level functional trait database of palms worldwide.
+
+## Installation
+
+You can install the development version of palmtrees from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("EmilHvitfeldt/palmtrees")
+```
+
+## Example
+
+The data set includes information about taxonamy, physical feautures
+
+```{r example, message=FALSE}
+library(tidyverse)
+library(palmtrees)
+
+glimpse(palmtrees)
+```
+
+So we can look at how the the sizes of the different species of palms vary across sub families
+
+```{r, warning=FALSE}
+palmtrees |>
+  ggplot(aes(max_stem_height_m, max_stem_dia_cm, color = palm_subfamily)) +
+  geom_point() +
+  scale_y_log10() +
+  scale_x_log10() +
+  theme_minimal()
+```
+
+And we can see which colors of the fruit co-occur a lot
+
+```{r, message=FALSE}
+library(recipes)
+library(corrr)
+
+recipe(~main_fruit_colors, data = palmtrees) |>
+  step_dummy_extract(main_fruit_colors, sep = "; ") |>
+  prep() |>
+  bake(new_data = NULL) |>
+  rename_with(\(x) str_remove(x, "main_fruit_colors_")) |>
+  correlate() |>
+  autoplot()
+```
+
