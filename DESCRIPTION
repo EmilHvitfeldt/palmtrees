@@ -12,5 +12,6 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
 LazyData: true
-URL: https://github.com/EmilHvitfeldt/palmtrees
+URL: https://github.com/EmilHvitfeldt/palmtrees,
+    https://emilhvitfeldt.github.io/palmtrees/
 BugReports: https://github.com/EmilHvitfeldt/palmtrees/issues
